@@ -1,6 +1,6 @@
 ---
 title: "Problem Set 2: Data Wrangling"
-author: Your Name Here
+author: Jonah Frumkin
 output: pdf_document
 ---
 
@@ -102,9 +102,6 @@ Create a histogram of this variable for just the US House races. Save the ggplot
 
 ## Answer 3
 ```{r}
-fb_ads <- fb_ads |>
-  mutate(impressions_millions = impressions / 1000000)
-fb_ads
 
 library(ggplot2)
 
@@ -112,7 +109,8 @@ fb_ads <- fb_ads |>
   mutate(impressions_millions = impressions / 1000000)
 
 
-plot_q3 <- ggplot(data = fb_ads |> filter(office == "US House"), mapping = aes(x = impressions_millions)) +
+plot_q3 <- ggplot(data = fb_ads |> filter(office == "US House"),
+                  mapping = aes(x = impressions_millions)) +
   geom_histogram(binwidth = 1) 
 
 plot_q3
@@ -144,9 +142,8 @@ fb_top_plot <- ggplot(data = fb_ads |>
                         filter(office == "US House") |>
                         slice_max(impressions_millions, n = 15),
                       mapping = aes(x = impressions_millions, 
-                                    y = reorder(cand_name_last, impressions_millions),
-                                    fill = party )) +
-  geom_bar(stat = "identity") +
+                                    y = reorder(cand_name_last, impressions_millions))) +
+  geom_bar(stat = "identity", aes(fill = party)) +
     labs(title = "Top 15 US House Candidates by Facebook Impressions, 2017 - 2018",
        x = "Facebook Ad Impressions (In millions)", y = "Candidate Last Name") +
   scale_fill_manual(values = c(R = "red", D = "blue")) 
